@@ -7,8 +7,15 @@ Bài toán phân loại hoa có nhiều ứng dụng thực tiễn, chẳng hạ
 
 Bài toán phân loại hoa có nhiều ứng dụng thực tiễn, chẳng hạn như phân loại hoa trong lĩnh vực nông nghiệp, phân loại hoa trong bảo tồn động vật hoang dã hoặc trong nghiên cứu khoa học.
 
-<img
-  src="photos/211.jpg"
-  alt="Alt text"
-  title="Bỉ Ngạn"
-  style="display: inline-block; margin: 0 auto; max-width: 300px">
+<img class=mobile-image src="photos/211.jpg" />
+<img class=mobile-image src="photos/8.jpg" />
+
+<style>
+  .img {
+    display: inline-block;
+  }
+  img.mobile-image {
+    width: 49%;
+    display: inline-block;
+  }
+</style>
