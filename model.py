@@ -33,19 +33,19 @@ class BaseModel(object):
     def AlexNet(self):
         model = keras.Sequential(
             [   layers.Input((self.image_W, self.image_H, self.image_C)),
-                #layer1
+                #Stage 1
                 layers.Conv2D(filters=96, kernel_size=(11,11),strides=4, padding='valid', activation='relu'),
                 layers.MaxPool2D(pool_size=(3,3),strides=2,padding='same'),
                 layers.Normalization(),
-                #layer2
+                #Stage 2
                 layers.Conv2D(filters=256, kernel_size=(3,3),strides=1, padding='same', activation='relu'),
                 layers.MaxPool2D(pool_size=(3,3),strides=2,padding='same'),
                 layers.Normalization(),
-                #layer3
+                #Stage 3
                 layers.Conv2D(filters=384, kernel_size=(3,3),strides=1, padding='same', activation='relu'),
-                #layer4
+                #Stage 4
                 layers.Conv2D(filters=384, kernel_size=(3,3),strides=1, padding='same', activation='relu'),
-                #layer5
+                #Stage 5
                 layers.Conv2D(filters=256, kernel_size=(3,3),strides=1, padding='same', activation='relu'),
                 layers.MaxPool2D(pool_size=(3,3),strides=2,padding='same'),        
                 layers.Flatten(),
@@ -64,29 +64,29 @@ class BaseModel(object):
     def VGG16(self):
         model = keras.Sequential(
             [   layers.Input((self.image_W, self.image_H, self.image_C)),
-                #layer 1
+                #Stage 1
                 layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D( 64, (3, 3), activation='relu', padding='same'),
                 layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
-                # layer 2
+                # Stage 2
                 layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
                 layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
-                # layer 3
+                # Stage 3
                 layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
                 layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
-                # layer 4
+                # Stage 4
                 layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
                 layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
-                # layer 5
+                # Stage 5
                 layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
                 layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
