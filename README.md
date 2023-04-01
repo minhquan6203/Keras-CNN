@@ -15,7 +15,8 @@ Bài toán phân loại hoa có nhiều ứng dụng thực tiễn, chẳng hạ
     display: inline-block;
   }
   img.mobile-image {
-    width: 49%;
+    width: 300;
+    height: 300;
     display: inline-block;
   }
 </style>
