@@ -107,36 +107,36 @@ class CNN_Model(object):
 
 
 
-    def conv_block(self,x, filters, kernel_size, strides):
+    def conv_block(self, x, filters, kernel_size, strides):
         x = Conv2D(filters, kernel_size=kernel_size, strides=strides, padding='same', activation='relu')(x)
         x = Conv2D(filters, kernel_size=kernel_size, strides=1, padding='same', activation='relu')(x)
-        shortcut = Conv2D(filters, kernel_size=1, strides=strides, padding='same', activation='relu')(x)
+        shortcut = Conv2D(filters, kernel_size=1, strides=1, padding='same', activation='relu')(x)
         x = Add()([x, shortcut])
         return x
 
-    def identity_block(self,x, filters, kernel_size):
+    def identity_block(self, x, filters, kernel_size):
         x = Conv2D(filters, kernel_size=kernel_size, strides=1, padding='same', activation='relu')(x)
         x = Conv2D(filters, kernel_size=kernel_size, strides=1, padding='same', activation='relu')(x)
         x = Add()([x, x])
         return x
 
     def ResNet34(self):
-        input_tensor = layers.Input((self.image_W, self.image_H, self.image_C)),
+        input_tensor = Input(shape=(self.image_W, self.image_H, self.image_C))
         # Stage 1
         x = Conv2D(64, kernel_size=7, strides=2, padding='same', activation='relu')(input_tensor)
         x = MaxPooling2D(pool_size=3, strides=2, padding='same')(x)
-        
+
         # Stage 2
         x = self.conv_block(x, filters=64, kernel_size=3, strides=1)
         x = self.identity_block(x, filters=64, kernel_size=3)
         x = self.identity_block(x, filters=64, kernel_size=3)
-        
+
         # Stage 3
         x = self.conv_block(x, filters=128, kernel_size=3, strides=2)
         x = self.identity_block(x, filters=128, kernel_size=3)
         x = self.identity_block(x, filters=128, kernel_size=3)
         x = self.identity_block(x, filters=128, kernel_size=3)
-        
+
         # Stage 4
         x = self.conv_block(x, filters=256, kernel_size=3, strides=2)
         x = self.identity_block(x, filters=256, kernel_size=3)
