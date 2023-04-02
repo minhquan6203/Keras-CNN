@@ -18,17 +18,19 @@ def training(args):
     train = load_data(data_path = args.train_path)
     valid = load_data(data_path = args.valid_path)
     
-    early_stopping = EarlyStopping(filepath = os.path.join(args.save_path, 'weight'),
-                       save_weights_only=True,
-                       monitor='val_accuracy',
-                       mode='max',
-                       save_best_only = True,
-                       patience=5)
-    
+    model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+                                                        filepath = os.path.join(args.save_path, 'weight'),
+                                                        save_weights_only=True,
+                                                        monitor = 'val_accuracy',
+                                                        mode = 'max',
+                                                        save_best_only = True)
+
+    early_stopping_callback = EarlyStopping(monitor = 'val_accuracy', mode = 'max',patience = 5, verbose = 1)
+
     history = model.fit(train,
                         epochs = args.num_epochs,
-                        verbose = 2,
-                        callbacks = [early_stopping],
+                        verbose = 1,
+                        callbacks = [model_checkpoint_callback,early_stopping_callback],
                         validation_data = valid)
 
     return history 

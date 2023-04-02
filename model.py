@@ -54,7 +54,7 @@ class CNN_Model(object):
                 layers.Dropout(0.5),
                 #fc layer2
                 layers.Dense(4096, activation='relu'),
-                layers.Dropout(0.5),
+                layers.Dropout(0.3),
                 #output layer
                 layers.Dense(self.num_classes, activation='softmax'),
             ])
@@ -63,45 +63,48 @@ class CNN_Model(object):
 
     def VGG16(self):
         model = keras.Sequential(
-            [   layers.Input((self.image_W, self.image_H, self.image_C)),
-                #Stage 1
-                layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D( 64, (3, 3), activation='relu', padding='same'),
-                layers.MaxPooling2D((2, 2), strides=(2, 2)),
+            [   
+                # Stage 1
+                keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same', input_shape=(self.image_W, self.image_H, self.image_C)),
+                keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+                keras.layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
                 # Stage 2
-                layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
-                layers.MaxPooling2D((2, 2), strides=(2, 2)),
+                keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+                keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+                keras.layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
                 # Stage 3
-                layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
-                layers.MaxPooling2D((2, 2), strides=(2, 2)),
+                keras.layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+                keras.layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+                keras.layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+                keras.layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
                 # Stage 4
-                layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
-                layers.MaxPooling2D((2, 2), strides=(2, 2)),
+                keras.layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+                keras.layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+                keras.layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+                keras.layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
                 # Stage 5
-                layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
-                layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
-                layers.MaxPooling2D((2, 2), strides=(2, 2)),
+                keras.layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+                keras.layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+                keras.layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+                keras.layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
-                layers.Flatten(),
+                keras.layers.Flatten(),
                 # fc layer 1
-                layers.Dense(4096, activation='relu'),
-                #fc layer 2
-                layers.Dense(4096, activation='relu'),
-                #output layer
-                layers.Dense(self.num_classes, activation='softmax'),
+                keras.layers.Dense(4096, activation='relu'),
+                keras.layers.Dropout(0.5),
+                # fc layer 2
+                keras.layers.Dense(4096, activation='relu'),
+                keras.layers.Dropout(0.3),
+                # output layer
+                keras.layers.Dense(self.num_classes, activation='softmax'),
             ])
 
         return model
+
 
 
     def conv_block(self,x, filters, kernel_size, strides):
