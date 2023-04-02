@@ -2,9 +2,9 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 
-def load_data(data_path: str, image_W: int = 224, image_H: int = 224, batch_size: int = 128):
+def load_data(data_path: str, image_W: int = 400, image_H: int = 400, batch_size: int = 128):
     
-    dataloder = tf.keras.preprocessing.image_dataset_from_directory(
+    dataloader = tf.keras.preprocessing.image_dataset_from_directory(
                     data_path,
                     labels="inferred",
                     label_mode="int", 
@@ -14,7 +14,7 @@ def load_data(data_path: str, image_W: int = 224, image_H: int = 224, batch_size
                     shuffle=True,
                     seed=1234)
                     
-    return dataloder
+    return dataloader
 
 
 def plot_accuracy(history, path_save):

@@ -4,7 +4,7 @@ from keras.models import Model
 from keras.layers import Input, Conv2D, BatchNormalization, Activation, Add, MaxPooling2D, Flatten, Dense
 from keras.regularizers import l2
 
-class BaseModel(object):
+class CNN_Model(object):
 
     def __init__(self, type_model: str ="Lenet5", image_C: int = 3, image_W: int = 400, image_H: int = 400, num_classes: int = 12):
         self.type_model=type_model
@@ -56,7 +56,7 @@ class BaseModel(object):
                 layers.Dense(4096, activation='relu'),
                 layers.Dropout(0.5),
                 #output layer
-                layers.Dense(10, activation='softmax'),
+                layers.Dense(self.num_classes, activation='softmax'),
             ])
 
         return model
@@ -156,7 +156,7 @@ class BaseModel(object):
 
 
 
-    def _define_model(self):
+    def define_model(self):
         
         if self.type_model=="AlexNet":
             return self.AlexNet()
@@ -169,12 +169,12 @@ class BaseModel(object):
 
 
     
-    def __call__(self, loss, metrics):
-        model = self._define_model()
+    def __call__(self, loss_function, metrics):
+        model = self.define_model()
 
         model.compile(
             optimizer = keras.optimizers.Adam(),
-            loss = loss,
+            loss = loss_function,
             metrics = metrics,
         )
 

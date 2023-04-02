@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.callbacks import EarlyStopping
 
-from model import BaseModel
+from model import CNN_Model
 from utils import load_data, plot_accuracy, plot_loss
 
 import os 
@@ -10,10 +10,11 @@ import argparse
 
 
 def training(args):
-    base_model = BaseModel(args.type_model, args.image_C, args.image_W, args.image_H, args.num_classes)
-    loss_func = [keras.losses.SparseCategoricalCrossentropy(from_logits=True),]
+    base_model = CNN_Model(args.type_model, args.image_C, args.image_W, args.image_H, args.num_classes)
+    loss_function = [keras.losses.SparseCategoricalCrossentropy(from_logits=True),]
     metrics = ['accuracy']
-    model = base_model(loss_func, metrics)
+    model = base_model(loss_function, metrics)
+    
     train = load_data(data_path = args.train_path)
     valid = load_data(data_path = args.valid_path)
     
