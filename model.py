@@ -34,7 +34,8 @@ class CNN_Model(object):
     
     def AlexNet(self):
         model = keras.Sequential(
-            [   layers.Input((self.image_W, self.image_H, self.image_C)),
+            [   
+                layers.Input((self.image_W, self.image_H, self.image_C)),
                 #Stage 1
                 layers.Conv2D(filters=96, kernel_size=(11,11),strides=4, padding='valid', activation='relu'),
                 layers.MaxPool2D(pool_size=(3,3),strides=2,padding='same'),
@@ -66,8 +67,9 @@ class CNN_Model(object):
     def VGG16(self):
         model = keras.Sequential(
             [   
+                layers.Input((self.image_W, self.image_H, self.image_C)),
                 # Stage 1
-                keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same', input_shape=(self.image_W, self.image_H, self.image_C)),
+                keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
                 keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
                 keras.layers.MaxPooling2D((2, 2), strides=(2, 2)),
 
@@ -215,14 +217,16 @@ class CNN_Model(object):
         
         if self.type_model=="AlexNet":
             return self.AlexNet()
-        if self.type_model=="VGG16":
+        elif self.type_model=="VGG16":
             return self.VGG16()
-        if self.type_model=="ResNet34":
+        elif self.type_model=="ResNet34":
             return self.ResNet34()
-        if self.type_model=="DenseNet":
+        elif self.type_model=="DenseNet":
             return self.DenseNet()
-
-        return self.LeNet5()
+        elif self.type_model=="LeNet5":
+          return self.LeNet5()
+        else:
+          raise ValueError("model have'nt defined")
 
 
     
