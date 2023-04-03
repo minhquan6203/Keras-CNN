@@ -210,53 +210,6 @@ class CNN_Model(object):
         return model
 
 
-    def conv_block(inputs, num_filters, kernel_size=3, padding='same', strides=1, activation='relu'):
-        conv = Conv2D(num_filters, kernel_size, padding=padding, strides=strides)(inputs)
-        conv = BatchNormalization()(conv)
-        conv = Activation(activation)(conv)
-        conv = Conv2D(num_filters, kernel_size, padding=padding, strides=strides)(conv)
-        conv = BatchNormalization()(conv)
-        conv = Activation(activation)(conv)
-        return conv
-
-    def encoder_block(inputs, num_filters, pool_size=(2,2), dropout=0.2):
-        conv = conv_block(inputs, num_filters)
-        pool = MaxPooling2D(pool_size)(conv)
-        if dropout > 0.0:
-            pool = Dropout(dropout)(pool)
-        return conv, pool
-
-    def decoder_block(inputs, skip_features, num_filters, upsample_size=(2,2), dropout=0.2):
-        upsample = UpSampling2D(upsample_size)(inputs)
-        upconv = Conv2D(num_filters, 2, padding='same')(upsample)
-        upconv = BatchNormalization()(upconv)
-        skip_conn = concatenate([upconv, skip_features], axis=3)
-        conv = conv_block(skip_conn, num_filters)
-        if dropout > 0.0:
-            conv = Dropout(dropout)(conv)
-        return conv
-
-    def build_unet(input_shape, num_classes, base_filters=64, depth=4, dropout=0.2):
-        inputs = Input(input_shape)
-
-        skip_connections = []
-        conv = inputs
-        for i in range(depth):
-            conv, pool = encoder_block(conv, base_filters*(2**i), dropout=dropout)
-            skip_connections.append(conv)
-
-        conv = conv_block(pool, base_filters*(2**depth), dropout=dropout)
-
-        for i in reversed(range(depth)):
-            conv = decoder_block(conv, skip_connections[i], base_filters*(2**i), dropout=dropout)
-
-        outputs = Conv2D(num_classes, 1, activation='softmax')(conv)
-
-        model = Model(inputs=inputs, outputs=outputs, name='U-Net')
-        return model
-
-
-
     def define_model(self):
         
         if self.type_model=="AlexNet":
