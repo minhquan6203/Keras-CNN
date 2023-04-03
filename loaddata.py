@@ -2,7 +2,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 class LoadData(object):
-    def __init__(self,image_W: int = 400, image_H: int = 400, batch_size: int = 128):
+    def __init__(self,image_W: int = 224, image_H: int = 224, batch_size: int = 128):
         self.image_W=image_W
         self.image_H=image_H
         self.batch_size=batch_size

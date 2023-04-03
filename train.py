@@ -53,8 +53,8 @@ def parse_args(parser):
     parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--num_classes', type=int, default=12)
     parser.add_argument('--image_C', type=int, default=3)
-    parser.add_argument('--image_H', type=int, default=400)
-    parser.add_argument('--image_W', type=int, default=400)
+    parser.add_argument('--image_H', type=int, default=224)
+    parser.add_argument('--image_W', type=int, default=224)
     parser.add_argument('--num_epochs', type=int, default=20)
     parser.add_argument('--save_path',type=str, default='./save')
     

@@ -8,7 +8,7 @@ from keras.regularizers import l2
 
 class CNN_Model(object):
 
-    def __init__(self, type_model: str ="Lenet5", image_C: int = 3, image_W: int = 400, image_H: int = 400, num_classes: int = 12):
+    def __init__(self, type_model: str ="Lenet5", image_C: int = 3, image_W: int = 224, image_H: int = 224, num_classes: int = 12):
         self.type_model=type_model
         self.image_C = image_C
         self.image_W = image_W
@@ -68,6 +68,7 @@ class CNN_Model(object):
         model = keras.Sequential(
             [   
                 layers.Input((self.image_W, self.image_H, self.image_C)),
+                layers.Rescaling(scale=1./255),
                 # Stage 1
                 keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
                 keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
@@ -187,7 +188,7 @@ class CNN_Model(object):
 
         return x
 
-    def DenseNet(self,blocks=[6,12,24,16], growth_rate=32, compression=0.5, input_shape=(224,224,3), num_classes=1000):
+    def DenseNet(self,blocks=[6,12,24,16], growth_rate=32, compression=0.5, input_shape=(224,224,3), num_classes=100):
         inputs = Input(shape=input_shape)
 
         x = Conv2D(64, (7,7), strides=(2,2), padding='same', kernel_initializer='he_normal')(inputs)
@@ -209,6 +210,7 @@ class CNN_Model(object):
         model = Model(inputs, x, name='DenseNet')
 
         return model
+
 
 
 

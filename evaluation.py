@@ -22,8 +22,8 @@ def eval(args):
 
 def parse_args(parser):
     parser.add_argument('--test_path', required=True, help='path to test dataset')
-    parser.add_argument('--image_H', type=int, default=400, help='height of input images')
-    parser.add_argument('--image_W', type=int, default=400, help='width of input images')
+    parser.add_argument('--image_H', type=int, default=224, help='height of input images')
+    parser.add_argument('--image_W', type=int, default=224, help='width of input images')
     parser.add_argument('--batch_size', type=int, default=128, help='batch size for test data generator')
     parser.add_argument('--checkpoint_path', required=True, help='path to model checkpoint file')
     
