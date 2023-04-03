@@ -3,7 +3,7 @@ from tensorflow.keras import layers
 from keras.models import Model
 from keras.layers import Input, Conv2D, BatchNormalization, Activation, Add, MaxPooling2D, Flatten, Dense, Dropout
 from keras.layers.pooling import MaxPooling2D, AveragePooling2D
-from keras.layers.merge import concatenate
+from keras.layers import concatenate
 from keras.regularizers import l2
 
 class CNN_Model(object):
@@ -181,14 +181,12 @@ class CNN_Model(object):
         x = Conv2D(num_filters, (1,1), padding='same', kernel_initializer='he_normal')(x)
         x = BatchNormalization(axis=3)(x)
         x = Activation('relu')(x)
-        x = AveragePooling2D((2,2), strides=(2,2))(x)
+        x = AveragePooling2D((2,2), strides=(1,1), padding='same')(x)
 
         return x
 
-    def DenseNet(self, blocks=[6,12,24,16], growth_rate=32, compression=0.5):
-
-
-        inputs = Input(shape=(self.image_W, self.image_H, self.image_C))
+    def DenseNet(self,blocks=[6,12,24,16], growth_rate=32, compression=0.5, input_shape=(224,224,3), num_classes=1000):
+        inputs = Input(shape=input_shape)
 
         x = Conv2D(64, (7,7), strides=(2,2), padding='same', kernel_initializer='he_normal')(inputs)
         x = BatchNormalization(axis=3)(x)
@@ -202,12 +200,15 @@ class CNN_Model(object):
 
         x = BatchNormalization(axis=3)(x)
         x = Activation('relu')(x)
-        x = AveragePooling2D((7,7))(x)
-        x = Dense(self.num_classes, activation='softmax')(x)
+        x = AveragePooling2D((7,7), strides=(1,1), padding='same')(x)
+        x = Flatten()(x)
+        x = Dense(num_classes, activation='softmax')(x)
 
         model = Model(inputs, x, name='DenseNet')
 
         return model
+
+
 
 
     def define_model(self):
