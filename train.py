@@ -20,7 +20,8 @@ def training(args):
 
     train = load_data(data_path = args.train_path)
     valid = load_data(data_path = args.valid_path)
-    
+
+    #save the best model
     best_model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
         filepath = os.path.join(args.save_path, 'best_model.h5'),
         save_weights_only=False,
@@ -28,23 +29,36 @@ def training(args):
         mode = 'max',
         save_best_only = True)
 
+    #save the last model
     last_model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
         filepath = os.path.join(args.save_path, 'last_model.h5'),
         save_weights_only=False,
         monitor = 'val_accuracy',
         mode = 'max',
         save_best_only = False)
-    
+
+    #early stopping 
     early_stopping_callback = EarlyStopping(monitor = 'val_accuracy', mode = 'max',patience = 5, verbose = 1)
 
+    #load the last saved model if it exists, and continue training from the last epoch
+    if os.path.exists(os.path.join(args.save_path, 'last_model.h5')):
+        model = keras.models.load_model(os.path.join(args.save_path, 'last_model.h5'))
+        print('Loaded the last saved model.')
+        initial_epoch = int(model.optimizer.iterations /args.batch_size)
+        print(f"continue training from epoch {initial_epoch + 1}")
+    else:
+        initial_epoch = 0
+        print("first time training!!!")
+    
     history = model.fit(train,
-                        epochs = args.num_epochs,
+                        epochs = initial_epoch+args.num_epochs,
+                        initial_epoch = initial_epoch,
                         verbose = 1,
                         callbacks = [best_model_checkpoint_callback, last_model_checkpoint_callback, early_stopping_callback],
                         validation_data = valid)
+    return history
 
-    return history 
- 
+
 
 def parse_args(parser):
     parser.add_argument('--train_path', required=True, help='path to train dataset')
@@ -57,9 +71,10 @@ def parse_args(parser):
     parser.add_argument('--image_W', type=int, default=224)
     parser.add_argument('--num_epochs', type=int, default=20)
     parser.add_argument('--save_path',type=str, default='./save')
-    
+
     args = parser.parse_args()
     return args 
+
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
