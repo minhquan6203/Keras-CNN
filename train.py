@@ -14,7 +14,7 @@ def training(args):
     base_model = CNN_Model(args.type_model, args.image_C, args.image_W, args.image_H, args.num_classes)
     loss_function = [keras.losses.SparseCategoricalCrossentropy(from_logits=True),]
     metrics = ['accuracy']
-    model = base_model(loss_function, metrics)
+    model = base_model(loss_function, metrics,args.learning_rate)
     
     load_data=LoadData(args.image_W, args.image_H,args.batch_size)
 
@@ -63,6 +63,7 @@ def training(args):
 def parse_args(parser):
     parser.add_argument('--train_path', required=True, help='path to train dataset')
     parser.add_argument('--valid_path', required=True, help='path to valid dataset')
+    parser.add_argument('--learning_rate', type=float,default=0.01, help='learning rate to training model')
     parser.add_argument('--type_model', type=str, default='LeNet5')
     parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--num_classes', type=int, default=12)

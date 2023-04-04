@@ -20,6 +20,7 @@ class CNN_Model(object):
         model = keras.Sequential(
             [   
                 layers.Input((self.image_W, self.image_H, self.image_C)),
+                layers.Rescaling(scale=1./255),
                 layers.Conv2D(filters=6, kernel_size=(5,5), padding='valid', activation='relu'),
                 layers.MaxPool2D(pool_size=(2,2),strides=2,padding='same'),
                 layers.Conv2D(filters=16, kernel_size=(5,5), padding='valid', activation='relu'),
@@ -127,6 +128,8 @@ class CNN_Model(object):
 
     def ResNet34(self):
         input_tensor = Input(shape=(self.image_W, self.image_H, self.image_C))
+        x = layers.Rescaling(scale=1./255)(input_tensor),
+
         # Stage 1
         x = Conv2D(64, kernel_size=7, strides=2, padding='same', activation='relu')(input_tensor)
         x = MaxPooling2D(pool_size=3, strides=2, padding='same')(x)
@@ -232,11 +235,11 @@ class CNN_Model(object):
 
 
     
-    def __call__(self, loss_function, metrics):
+    def __call__(self, loss_function, metrics, lr):
         model = self.define_model()
 
         model.compile(
-            optimizer = keras.optimizers.Adam(),
+            optimizer = keras.optimizers.Adam(learning_rate=lr),
             loss = loss_function,
             metrics = metrics,
         )
