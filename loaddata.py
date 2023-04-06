@@ -1,5 +1,4 @@
 import tensorflow as tf
-import matplotlib.pyplot as plt
 
 class LoadData(object):
     def __init__(self,image_W: int = 224, image_H: int = 224, batch_size: int = 128):
@@ -8,6 +7,15 @@ class LoadData(object):
         self.batch_size=batch_size
 
     def load_data(self,data_path: str):
+        # Define data augmentation transformations
+        data_augmentation = tf.keras.Sequential([
+          tf.keras.layers.experimental.preprocessing.RandomFlip('horizontal'),
+          tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
+          tf.keras.layers.experimental.preprocessing.RandomZoom(0.2),
+          tf.keras.layers.experimental.preprocessing.RandomTranslation(height_factor=(-0.1, 0.1), width_factor=(-0.1, 0.1)),
+        ])
+        
+        # Load images from directory
         dataloader = tf.keras.preprocessing.image_dataset_from_directory(
                         data_path,
                         labels="inferred",
@@ -17,6 +25,9 @@ class LoadData(object):
                         image_size=(self.image_H, self.image_W),
                         shuffle=True,
                         seed=1234)
+        
+        # Apply data augmentation
+        dataloader = dataloader.map(lambda x, y: (data_augmentation(x), y))
                         
         return dataloader
         

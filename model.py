@@ -37,6 +37,7 @@ class CNN_Model(object):
         model = keras.Sequential(
             [   
                 layers.Input((self.image_W, self.image_H, self.image_C)),
+                layers.Rescaling(scale=1./255),
                 #Stage 1
                 layers.Conv2D(filters=96, kernel_size=(11,11),strides=4, padding='valid', activation='relu'),
                 layers.MaxPool2D(pool_size=(3,3),strides=2,padding='same'),
