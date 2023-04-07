@@ -8,11 +8,24 @@ from loaddata import LoadData
 from sklearn.metrics import f1_score, confusion_matrix
 import numpy as np
 
+def load_data(data_path: str, img_W: int = 224, img_H: int = 224, batch_size: int = 128):
+      dataloder = tf.keras.preprocessing.image_dataset_from_directory(
+                      data_path,
+                      labels="inferred",
+                      label_mode="int", 
+                      color_mode="rgb",
+                      batch_size=batch_size,
+                      image_size=(img_H, img_W),
+                      shuffle=True,
+                      seed=1111)
+                      
+      return dataloder
+
 def eval(args):
 
     model = tf.keras.models.load_model(os.path.join(os.path.join(args.checkpoint_path, 'best_model.h5')))
-    load_data = LoadData(args.image_W, args.image_H, args.batch_size)
-    test_data = load_data(data_path=args.test_path)
+
+    test_data = load_data(args.test_path,args.image_W, args.image_H, args.batch_size)
 
     # Evaluate model on test data
     eval_results = model.evaluate(test_data)
